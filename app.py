@@ -10,8 +10,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 cors = CORS(app, resources={r"/": {"origins": "*"}})
 
-@app.route("/   ", methods=["POST"])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@app.route("/", methods=["POST"])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 
 def index():
     data = json.loads(request.data.decode())['data']
