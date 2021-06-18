@@ -8,9 +8,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, resources={r"/forcast": {"origins": "*"}})
+cors = CORS(app, resources={r"/": {"origins": "*"}})
 
-@app.route("/forcast", methods=["POST"])
+@app.route("/   ", methods=["POST"])
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 
 def index():
