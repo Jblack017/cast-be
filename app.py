@@ -21,11 +21,11 @@ def index():
     df = df[["Date","Open"]]
     df = df.rename(columns={"Date":"ds","Open":"y" })
     df.head()
-    m = Prophet(yearly_seasonality=True, daily_seasonality=False)
+    m = Prophet(yearly_seasonality = "auto", daily_seasonality = "auto")
     m.fit(df)
-    future = m.make_future_dataframe(periods = 90, include_history = False)
+    future = m.make_future_dataframe(periods = 90, include_history = True)
     prediction = m.predict(future)
-    prediction = prediction.rename(columns={"ds":"Date"})
+    prediction = prediction.rename(columns = {"ds":"Date"})
     prediction = prediction[['Date', 'trend', 'trend_lower', 'trend_upper']]
     csvData = prediction.to_csv()
     return jsonify({'data': csvData})
