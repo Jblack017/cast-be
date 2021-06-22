@@ -16,16 +16,12 @@ cors = CORS(app, resources={r"/": {"origins": "*"}})
 def index():
     data = json.loads(request.data.decode())['data']
     df = pd.DataFrame(data[1:], columns = data[0])
-    df.head()
     df.describe()
-    df = df[["Date","Open"]]
-    df = df.rename(columns={"Date":"ds","Open":"y" })
-    df.head()
-    m = Prophet(yearly_seasonality = True, weekly_seasonality= False, daily_seasonality = False)
-    m.fit(df)
-    future = m.make_future_dataframe(periods = 90, include_history = False)
+    df = df[["Date","Open"]].rename(columns={"Date":"ds","Open":"y" })
+    m = Prophet(daily_seasonality=True, weekly_seasonality=True, changepoint_prior_scale=0.1, changepoint_range=1).fit(df)
+    future = m.make_future_dataframe(periods=180, include_history=False)
     prediction = m.predict(future)
     prediction = prediction.rename(columns = {"ds":"Date"})
-    prediction = prediction[['Date', 'trend', 'trend_lower', 'trend_upper']]
+    prediction = prediction[['Date', 'yhat', 'yhat_lower', 'yhat_upper']]
     csvData = prediction.to_csv()
     return jsonify({'data': csvData})
