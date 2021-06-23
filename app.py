@@ -19,7 +19,7 @@ def index():
     df.describe()
     df = df[["Date","Open"]].rename(columns={"Date":"ds","Open":"y" })
     m = Prophet(daily_seasonality=True, weekly_seasonality=True, changepoint_prior_scale=0.1, changepoint_range=1).fit(df)
-    future = m.make_future_dataframe(periods=180, include_history=False)
+    future = m.make_future_dataframe(periods=90, include_history=False)
     prediction = m.predict(future)
     prediction = prediction.rename(columns = {"ds":"Date"})
     prediction = prediction[['Date', 'yhat', 'yhat_lower', 'yhat_upper']]
